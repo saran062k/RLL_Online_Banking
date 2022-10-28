@@ -1,0 +1,80 @@
+CREATE TABLE `hibernate_sequence` (
+  `next_val` bigint DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `user` (
+  `id` bigint NOT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `fullname` varchar(255) DEFAULT NULL,
+  `mailid` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `phonenumber` bigint DEFAULT NULL,
+  `surname` varchar(255) DEFAULT NULL,
+  `primary_account_id` bigint DEFAULT NULL,
+  `savings_account_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKbj0uoj9i40dory8w4t5ojyb9n` (`primary_account_id`),
+  KEY `FKihums7d3g5cv9ehminfs1539e` (`savings_account_id`),
+  CONSTRAINT `FKbj0uoj9i40dory8w4t5ojyb9n` FOREIGN KEY (`primary_account_id`) REFERENCES `primary_account` (`id`),
+  CONSTRAINT `FKihums7d3g5cv9ehminfs1539e` FOREIGN KEY (`savings_account_id`) REFERENCES `savings_account` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `transactions` (
+  `transaction_id` int NOT NULL,
+  `ifsc` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `destination_accountnumber` int NOT NULL,
+  `source_accountnumber` int NOT NULL,
+  `transaction_amount` bigint DEFAULT NULL,
+  PRIMARY KEY (`transaction_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `primary_account` (
+  `id` bigint NOT NULL,
+  `account_balance` bigint DEFAULT NULL,
+  `account_number` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `savings_account` (
+  `id` bigint NOT NULL,
+  `account_balance` bigint DEFAULT NULL,
+  `account_number` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `personal_transaction` (
+  `transaction_id` int NOT NULL,
+  `acc_no` int NOT NULL,
+  `acc_type` varchar(255) DEFAULT NULL,
+  `date` datetime(6) DEFAULT NULL,
+  `new_balance` bigint DEFAULT NULL,
+  `prev_balance` bigint DEFAULT NULL,
+  `transaction_type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`transaction_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `loan` (
+  `id` bigint NOT NULL,
+  `accepted` bit(1) NOT NULL,
+  `user_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKxxm1yc1xty3qn1pthgj8ac4f` (`user_id`),
+  CONSTRAINT `FKxxm1yc1xty3qn1pthgj8ac4f` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `cheque_book` (
+  `id` bigint NOT NULL,
+  `accepted` bit(1) NOT NULL,
+  `user_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKjhiwqtt3o2tds933ybeah0web` (`user_id`),
+  CONSTRAINT `FKjhiwqtt3o2tds933ybeah0web` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `admin` (
+  `id` int NOT NULL,
+  `emailid` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
